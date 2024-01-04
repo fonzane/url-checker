@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+  <title>Webmonitor Watcher URLS</title>
+</head>
+<body>
+  <h4>URLS</h4>
+  <ul>
+    {% for url in urls %}
+      <li>{{url}}</li>
+    {% endfor %}
+  </ul>
+  <form method="post" action="{{url_for('urls_template')}}">
+    <label for="new_url">Add a new URL:</label>
+    <input type="text" id="new_url" name="new_url" required>
+    <button type="submit">Submit</button>
+  </form>
+</body>
