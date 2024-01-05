@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect
+from database import Database
 import requests
 from time import sleep
 from datetime import datetime
@@ -6,28 +7,60 @@ from datetime import datetime
 urls = []
 numbers = []
 
-with open("urls.txt") as urls_file:
-    for url in urls_file:
-        urls.append(url.strip())
-with open("mobiles.txt") as numbers_file:
-    for number in numbers_file:
-        numbers.append(number.strip())
-print(f"read numbers from file: {numbers}")
-print(f"read urls from file: {urls}")
+def read_urls():
+  urls.clear()
+  for url in db.get_urls():
+     urls.append(url)
+  print(f"read urls from db: {urls}")
+
+def read_mobiles():
+  numbers.clear()
+  for number in db.get_numbers():
+     numbers.append(number)
+  print(f"read numbers from db: {numbers}")
 
 app = Flask(__name__)
+db = Database('url_checker.db')
 
 @app.route("/")
 def base():
+  db.setup_database()
   return render_template('home.html')
 
-@app.route('/urls', methods=['GET', 'POST'])
+@app.route('/urls')
+@app.route('/urls/new', methods=['POST'])
+@app.route('/urls/delete', methods=['POST'])
 def urls_template():
+  read_urls()
+
+  if 'delete' in request.path:
+    delete_url = request.form.get('url')
+    print(delete_url)
+    return redirect('/urls')
+
   if request.method == 'POST':
     new_url = request.form.get('new_url')
     if new_url:
-       with open('urls.txt', 'a') as file:
-          file.write(new_url + '\n')
-    return redirect('/')
+       db.write_url(new_url)
+    return redirect('/urls')
 
   return render_template('urls.html', urls=urls)
+
+@app.route('/mobiles')
+@app.route('/mobiles/new', methods=['POST'])
+@app.route('/mobiles/delete', methods=['POST'])
+def mobiles_template():
+  read_mobiles()
+
+  if 'delete' in request.path:
+    delete_number = request.form.get('url')
+    print(delete_number)
+    return redirect('/mobiles')
+
+  if request.method == 'POST':
+    new_number = request.form.get('new_number')
+    if new_number:
+        db.write_number(new_number)
+    return redirect('/mobiles')
+
+  return render_template('mobiles.html', numbers=numbers)

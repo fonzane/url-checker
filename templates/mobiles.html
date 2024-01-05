@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+  <title>Webmonitor Watcher URLS</title>
+  <link rel="stylesheet" href="static/mobiles.css">
+  <link rel="stylesheet" href="static/bootstrap.min.css">
+</head>
+<body>
+  <div class="container m-2">
+    <h3 class="heading">Mobile Numbers</h3>
+    <ul class="mt-3">
+      {% for number in numbers %}
+      <form method="post" action="/mobiles/delete">
+        <input type="hidden" name="number" value="{{number}}">
+        <li>{{number}} <button type="submit">X</button></li>
+      </form>
+      {% endfor %}
+    </ul>
+    <form method="post" action="/mobiles/new">
+      <label for="new_number">Add a new Mobile Number</label>
+      <br>
+      <input type="text" id="new_number" name="new_number" required>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</body>

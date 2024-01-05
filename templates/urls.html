@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <head>
   <title>Webmonitor Watcher URLS</title>
+  <link rel="stylesheet" href="static/urls.css">
+  <link rel="stylesheet" href="static/bootstrap.min.css">
 </head>
 <body>
-  <h4>URLS</h4>
-  <ul>
-    {% for url in urls %}
-      <li>{{url}}</li>
-    {% endfor %}
-  </ul>
-  <form method="post" action="{{url_for('urls_template')}}">
-    <label for="new_url">Add a new URL:</label>
-    <input type="text" id="new_url" name="new_url" required>
-    <button type="submit">Submit</button>
-  </form>
+  <div class="container m-2">
+    <h3 class="heading">URLS</h3>
+    <ul class="mt-3">
+      {% for url in urls %}
+      <form method="post" action="/urls/delete">
+        <input type="hidden" name="url" value="{{url}}">
+        <li>{{url}} <button type="submit">X</button></li>
+      </form>
+      {% endfor %}
+    </ul>
+    <form method="post" action="/urls/new">
+      <label for="new_url">Add a new URL</label>
+      <br>
+      <input type="text" id="new_url" name="new_url" required>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 </body>
