@@ -1,8 +1,5 @@
 from flask import Flask, render_template, request, redirect
 from database import Database
-import requests
-from time import sleep
-from datetime import datetime
 
 urls = []
 numbers = []
@@ -25,7 +22,9 @@ db = Database('url_checker.db')
 @app.route("/")
 def base():
   db.setup_database()
-  return render_template('home.html')
+  read_urls()
+  read_mobiles()
+  return render_template('home.html', data={'urls': urls, 'numbers': numbers})
 
 @app.route('/urls')
 @app.route('/urls/new', methods=['POST'])

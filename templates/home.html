@@ -1,23 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="static/home.css">
-  <link rel="stylesheet" href="static/bootstrap.min.css">
-  <title>FW-Systeme URL-Checker</title>
-</head>
-<body>
-  <div class="container">
-    <h2>FW-Systeme URL-Checker</h2>
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="static/home.css">
+{% endblock %}
+{% block content %}
+<ul>
+  <li>
+
+  </li>
+  <li>
+
+  </li>
+</ul>
+<div class="row">
+  <div class="col">
+    <h5><a href="/urls" class="text-decoration-none">Webseiten</a></h5>
     <ul>
-      <li>
-        <a href="/urls">URLS</a>
-      </li>
-      <li>
-        <a href="/mobiles">Mobilnummern</a>
-      </li>
+      {% for url in data.urls %}
+        <li>{{url}}</li>
+      {% endfor %}
     </ul>
   </div>
-</body>
-</html>
+  <div class="col">
+    <h5><a href="/mobiles" class="text-decoration-none">Mobilfunknummern</a></h5>
+    <ul>
+      {% for number in data.numbers %}
+        <li>{{number}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
