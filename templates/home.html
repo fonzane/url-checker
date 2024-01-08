@@ -4,28 +4,20 @@
     <link rel="stylesheet" href="static/home.css">
 {% endblock %}
 {% block content %}
-<ul>
-  <li>
-
-  </li>
-  <li>
-
-  </li>
-</ul>
 <div class="row">
   <div class="col">
     <h5><a href="/urls" class="text-decoration-none">Webseiten</a></h5>
-    <ul>
+    <ul class="list-group">
       {% for url in data.urls %}
-        <li>{{url}}</li>
+        <li class="list-group-item">{{url}}</li>
       {% endfor %}
     </ul>
   </div>
   <div class="col">
     <h5><a href="/mobiles" class="text-decoration-none">Mobilfunknummern</a></h5>
-    <ul>
+    <ul class="list-group">
       {% for number in data.numbers %}
-        <li>{{number}}</li>
+        <li class="list-group-item">{{number}}</li>
       {% endfor %}
     </ul>
   </div>

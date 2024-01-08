@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from database import Database
+from url_checker import URLChecker
 
 urls = []
 numbers = []
@@ -8,16 +9,17 @@ def read_urls():
   urls.clear()
   for url in db.get_urls():
      urls.append(url)
-  print(f"read urls from db: {urls}")
 
 def read_mobiles():
   numbers.clear()
   for number in db.get_numbers():
      numbers.append(number)
-  print(f"read numbers from db: {numbers}")
 
 app = Flask(__name__)
 db = Database('url_checker.db')
+# with app.app_context():
+  # url_checker = URLChecker(db=db)
+  # url_checker.start_wacher()
 
 @app.route("/")
 def base():
@@ -34,7 +36,8 @@ def urls_template():
 
   if 'delete' in request.path:
     delete_url = request.form.get('url')
-    print(delete_url)
+    print("Deleting " + delete_url)
+    db.delete_url(delete_url)
     return redirect('/urls')
 
   if request.method == 'POST':
@@ -52,8 +55,9 @@ def mobiles_template():
   read_mobiles()
 
   if 'delete' in request.path:
-    delete_number = request.form.get('url')
-    print(delete_number)
+    delete_number = request.form.get('number')
+    print("Deleting " + delete_number)
+    db.delete_number(delete_number)
     return redirect('/mobiles')
 
   if request.method == 'POST':
