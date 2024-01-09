@@ -3,11 +3,13 @@ from database import Database
 from url_checker import URLChecker
 from threading import Thread
 from dotenv import load_dotenv
+from os import getenv
 
 load_dotenv()
 
 urls = []
 numbers = []
+hostadress = getenv("HOSTADRESS")
 
 def read_urls():
   urls.clear()
@@ -72,10 +74,7 @@ def mobiles_template():
 
   return render_template('mobiles.html', numbers=numbers)
 
-def run_flask_app():
-  app.run(port=5000)
-
 if __name__ == '__main__':
   url_checker_process = Thread(target=url_checker.start_wacher)
   url_checker_process.start()
-  run_flask_app()
+  app.run(host=hostadress, port=5000)
