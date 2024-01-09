@@ -9,7 +9,18 @@
     <h5><a href="/urls" class="text-decoration-none">Webseiten</a></h5>
     <ul class="list-group">
       {% for url in data.urls %}
-        <li class="list-group-item">{{url}}</li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span class="my-auto">
+            {{url}}
+          </span>
+          <span>
+            {% if data.results[url] %}
+              <button class="btn btn-success">Online</button>
+            {% else %}
+              <button class="btn btn-danger">Offline</button>
+            {% endif %}
+          </span>
+        </li>
       {% endfor %}
     </ul>
   </div>
@@ -21,5 +32,9 @@
       {% endfor %}
     </ul>
   </div>
+</div>
+<!-- Further Information -->
+<div class="row">
+
 </div>
 {% endblock %}

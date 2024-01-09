@@ -33,7 +33,12 @@ def base():
   db.setup_database()
   read_urls()
   read_mobiles()
-  return render_template('home.html', data={'urls': urls, 'numbers': numbers})
+  return render_template('home.html', data={
+    'urls': urls,
+    'numbers': numbers,
+    'interval': int(getenv('CHECK_INTERVAL'))/3600,
+    'results': url_checker.results
+  })
 
 @app.route('/urls')
 @app.route('/urls/new', methods=['POST'])

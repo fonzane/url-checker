@@ -55,12 +55,16 @@ class URLChecker:
       self.send_sms(number, f"Webmonitor watcher started at {datetime.now()}...")
 
     while True:
+      self.results = {}
       for url in self.urls:
         url_online = self.check_website_online(url)
 
         if not url_online:
+          self.results[url] = False
           print(f"Couldn't reach url {url} and sending sms to {self.numbers} - {datetime.now()}")
           for number in self.numbers:
             self.send_sms(number, f"Website not reachable: {url} - {datetime.now()}")
+        else:
+          self.results[url] = True
       print(f"Checked {self.urls}. Next check in {check_interval/3600} hours...")
       sleep(check_interval)
