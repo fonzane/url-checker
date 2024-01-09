@@ -2,6 +2,7 @@ from database import Database
 import requests
 from time import sleep
 from datetime import datetime
+import os
 
 class URLChecker:
 
@@ -48,6 +49,8 @@ class URLChecker:
     print(f"URL Checker - reset urls: {urls}")
 
   def start_wacher(self):
+    check_interval = int(os.getenv('CHECK_INTERVAL'))
+
     for number in self.numbers:
       self.send_sms(number, f"Webmonitor watcher started at {datetime.now()}...")
 
@@ -59,7 +62,5 @@ class URLChecker:
           print(f"Couldn't reach url {url} and sending sms to {self.numbers} - {datetime.now()}")
           for number in self.numbers:
             self.send_sms(number, f"Website not reachable: {url} - {datetime.now()}")
-      # print(f"Checked {self.urls}. Next check in 24 hours...")
-      print(f"Checked {self.urls}. Next check in 5 minutes...")
-      # sleep(86400)
-      sleep(300)
+      print(f"Checked {self.urls}. Next check in {check_interval/3600} hours...")
+      sleep(check_interval)

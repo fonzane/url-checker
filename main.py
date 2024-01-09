@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, redirect
 from database import Database
 from url_checker import URLChecker
 from threading import Thread
+from dotenv import load_dotenv
+
+load_dotenv()
 
 urls = []
 numbers = []

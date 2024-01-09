@@ -1,3 +1,5 @@
 __pycache__
 pyvenv.cfg
 url_checker.db
+.DS_Store
+# .env

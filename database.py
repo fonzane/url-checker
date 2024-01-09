@@ -32,7 +32,7 @@ class Database:
       );
       CREATE TABLE IF NOT EXISTS numbers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        number TEXT NOT NULL
+        number TEXT NOT NULL UNIQUE
       );
       '''
       cursor.executescript(create_table_query)
