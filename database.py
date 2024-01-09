@@ -25,17 +25,42 @@ class Database:
     with self.get_db() as db:
       cursor = db.cursor()
 
-      create_table_query = '''
-      CREATE TABLE IF NOT EXISTS urls (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        url TEXT NOT NULL
-      );
-      CREATE TABLE IF NOT EXISTS numbers (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        number TEXT NOT NULL UNIQUE
-      );
-      '''
-      cursor.executescript(create_table_query)
+      # Check if tables exist
+      cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='urls';")
+      urls_table_exists = cursor.fetchone() is not None
+
+      cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='numbers';")
+      numbers_table_exists = cursor.fetchone() is not None
+
+      # If tables don't exist, create them
+      if not urls_table_exists:
+        cursor.execute('''
+          CREATE TABLE urls (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            url TEXT NOT NULL
+          );
+        ''')
+
+      if not numbers_table_exists:
+        cursor.execute('''
+          CREATE TABLE numbers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            number TEXT NOT NULL UNIQUE
+          );
+        ''')
+
+      db.commit()
+      # create_table_query = '''
+      # CREATE TABLE IF NOT EXISTS urls (
+      #   id INTEGER PRIMARY KEY AUTOINCREMENT,
+      #   url TEXT NOT NULL
+      # );
+      # CREATE TABLE IF NOT EXISTS numbers (
+      #   id INTEGER PRIMARY KEY AUTOINCREMENT,
+      #   number TEXT NOT NULL UNIQUE
+      # );
+      # '''
+      # cursor.executescript(create_table_query)
 
 
   def get_urls(self):

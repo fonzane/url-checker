@@ -10,6 +10,7 @@ load_dotenv()
 urls = []
 numbers = []
 hostadress = getenv("HOSTADRESS")
+db_path = getenv("DB_PATH")
 
 def read_urls():
   urls.clear()
@@ -22,7 +23,9 @@ def read_mobiles():
      numbers.append(number)
 
 app = Flask(__name__)
-db = Database('url_checker.db', True)
+db = Database(db_path, True)
+with app.app_context():
+  db.setup_database()
 url_checker = URLChecker()
 
 @app.route("/")

@@ -7,7 +7,7 @@ from os import getenv
 class URLChecker:
 
   def __init__(self):
-    self.db = Database("url_checker.db", False)
+    self.db = Database(getenv("DB_PATH"), False)
     self.urls = self.db.get_urls()
     self.numbers = self.db.get_numbers()
     print(f"URL Watcher inizialized with urls - {self.urls} and numbers - {self.numbers}.")
