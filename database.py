@@ -3,13 +3,17 @@ from flask import g
 
 class Database:
 
-  def __init__(self, database_path):
+  def __init__(self, database_path, is_flask: bool):
     self.database_path = database_path
+    self.is_flask = is_flask
 
   def get_db(self):
-    db = getattr(g, '_database', None)
-    if db is None:
-      db = g._database = sqlite3.connect(self.database_path)
+    if(self.is_flask):
+      db = getattr(g, '_database', None)
+      if db is None:
+        db = g._database = sqlite3.connect(self.database_path)
+    else:
+      db = sqlite3.connect(self.database_path)
     return db
 
   def close_db(self):
@@ -32,7 +36,6 @@ class Database:
       );
       '''
       cursor.executescript(create_table_query)
-
 
 
   def get_urls(self):

@@ -5,9 +5,11 @@ from datetime import datetime
 
 class URLChecker:
 
-  def __init__(self, db):
-    self.urls = db.get_urls()
-    self.numbers = db.get_numbers()
+  def __init__(self):
+    self.db = Database("url_checker.db", False)
+    self.urls = self.db.get_urls()
+    self.numbers = self.db.get_numbers()
+    print(f"URL Watcher inizialized with urls - {self.urls} and numbers - {self.numbers}.")
 
   def send_sms(self, number: str, message: str):
     params='{"telephone":"%s","message":"%s"}' %(number, message)
@@ -31,6 +33,20 @@ class URLChecker:
       print(f"[Error] requesting {url} {e}")
       return False
 
+  def reset_numbers(self):
+    numbers = self.db.get_numbers()
+    self.numbers.clear()
+    for number in numbers:
+      self.numbers.append(number)
+    print(f"URL Checker - reset numbers: {numbers}")
+
+  def reset_urls(self):
+    urls = self.db.get_urls()
+    self.urls.clear()
+    for url in urls:
+      self.urls.append(url)
+    print(f"URL Checker - reset urls: {urls}")
+
   def start_wacher(self):
     for number in self.numbers:
       self.send_sms(number, f"Webmonitor watcher started at {datetime.now()}...")
@@ -43,5 +59,7 @@ class URLChecker:
           print(f"Couldn't reach url {url} and sending sms to {self.numbers} - {datetime.now()}")
           for number in self.numbers:
             self.send_sms(number, f"Website not reachable: {url} - {datetime.now()}")
-      print(f"Checked {self.urls}. Next check in 24 hours...")
-      sleep(86400)
+      # print(f"Checked {self.urls}. Next check in 24 hours...")
+      print(f"Checked {self.urls}. Next check in 5 minutes...")
+      # sleep(86400)
+      sleep(300)
